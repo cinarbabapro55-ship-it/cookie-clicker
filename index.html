@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookie Clicker: Developer Edition</title>
+    <title>Cookie Clicker: Economy Edition</title>
     <style>
         :root {
             --bg-color: #0f0c1b;
@@ -12,6 +12,7 @@
             --text-sub: #a29bfe;
             --accent-color: #6c5ce7;
             --premium-gold: #fdcb6e;
+            --money-green: #2ecc71;
             --admin-red: #ff7675;
         }
 
@@ -37,21 +38,27 @@
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(108, 92, 231, 0.2);
             text-align: center;
-            position: relative;
         }
 
-        .header-zone {
-            margin-bottom: 25px;
+        .stats-zone {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 20px;
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin: 0 0 5px 0;
+            font-size: 2.3rem;
+            margin: 0;
             font-weight: 800;
-            background: linear-gradient(45deg, #fff, var(--text-sub));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            color: #fff;
+        }
+
+        .money-display {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--money-green);
+            text-shadow: 0 0 10px rgba(46, 204, 113, 0.2);
         }
 
         .cps-badge {
@@ -62,15 +69,49 @@
             border-radius: 20px;
             font-size: 0.95rem;
             font-weight: 600;
-            border: 1px solid rgba(108, 92, 231, 0.3);
+            margin-top: 5px;
+        }
+
+        .exchange-zone {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 15px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+
+        .exchange-btn {
+            background: linear-gradient(45deg, var(--accent-color), #8e44ad);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+        }
+
+        .exchange-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.6);
+        }
+
+        .tax-info {
+            font-size: 0.8rem;
+            color: var(--admin-red);
+            margin-top: 8px;
+            font-style: italic;
         }
 
         .cookie-wrapper {
-            margin: 35px 0;
+            margin: 25px 0;
         }
 
         #cookie-btn {
-            font-size: 110px;
+            font-size: 100px;
             background: none;
             border: none;
             cursor: pointer;
@@ -80,13 +121,8 @@
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
         }
 
-        #cookie-btn:hover {
-            transform: scale(1.05);
-        }
-
-        #cookie-btn:active {
-            transform: scale(0.92);
-        }
+        #cookie-btn:hover { transform: scale(1.05); }
+        #cookie-btn:active { transform: scale(0.92); }
 
         .market-title {
             font-size: 1.2rem;
@@ -94,7 +130,6 @@
             text-align: left;
             margin: 25px 0 15px 0;
             font-weight: 700;
-            letter-spacing: 0.5px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             padding-bottom: 8px;
         }
@@ -118,12 +153,11 @@
         }
 
         .market-item:hover {
-            background: rgba(108, 92, 231, 0.15);
-            border-color: var(--accent-color);
+            background: rgba(46, 204, 113, 0.1);
+            border-color: var(--money-green);
             transform: translateY(-2px);
         }
 
-        /* GİZLİ ADMİN PANELİ STİLLERİ */
         .admin-panel {
             background: #2d132c;
             border: 2px dashed var(--admin-red);
@@ -134,7 +168,7 @@
             border-radius: 18px;
             box-shadow: 0 10px 25px rgba(255, 118, 117, 0.2);
             box-sizing: border-box;
-            display: none; /* Başlangıçta gizli */
+            display: none;
             text-align: left;
         }
 
@@ -142,23 +176,26 @@
             color: var(--admin-red);
             font-weight: bold;
             font-size: 1.1rem;
-            margin-top: 0;
             margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
+        .admin-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
         .admin-input {
-            width: 100%;
+            flex: 1;
             padding: 10px;
             background: #1f0b1e;
             border: 1px solid var(--admin-red);
             border-radius: 8px;
             color: #fff;
-            font-size: 1rem;
-            margin-bottom: 10px;
-            box-sizing: border-box;
+            font-size: 0.9rem;
             outline: none;
         }
 
@@ -170,45 +207,48 @@
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            width: 100%;
-            font-size: 1rem;
+            font-size: 0.9rem;
             transition: background 0.2s;
         }
 
-        .admin-btn:hover {
-            background: #e84393;
-        }
-
+        .admin-btn:hover { background: #e84393; }
         .item-info { text-align: left; }
-        .item-name { font-weight: 700; font-size: 1rem; margin-bottom: 2px; }
+        .item-name { font-weight: 700; font-size: 1rem; }
         .item-desc { font-size: 0.8rem; color: var(--text-sub); }
         .item-cost-zone { text-align: right; }
-        .item-cost { font-weight: 700; color: var(--premium-gold); font-size: 1rem; }
-        .item-count { font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); margin-top: 2px; }
+        .item-cost { font-weight: 700; color: var(--money-green); font-size: 1rem; }
+        .item-count { font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }
     </style>
 </head>
 <body>
 
 <div class="game-container">
-    <div class="header-zone">
-        <h1 id="score">0 Kurabiye</h1>
-        <div class="cps-badge" id="cps-display">Saniyede: 0</div>
+    <div class="stats-zone">
+        <h1 id="score">0 🍪</h1>
+        <div class="money-display" id="money-score">0 $</div>
+        <div><div class="cps-badge" id="cps-display">Saniyede: 0 🍪</div></div>
+    </div>
+    
+    <!-- Banka / Dönüştürme Alanı -->
+    <div class="exchange-zone">
+        <button class="exchange-btn" onclick="exchangeCookies()">Tüm Kurabiyeleri Paraya Çevir ($)</button>
+        <div class="tax-info">⚠️ Kurabiye Bankası %50 vergi kesintisi uygulamaktadır! (2 Kurabiye = 1 $)</div>
     </div>
     
     <div class="cookie-wrapper">
         <button id="cookie-btn" onclick="clickCookie()">🍪</button>
     </div>
     
-    <div class="market-title">Geliştirmeler & Fabrikalar</div>
+    <div class="market-title">Geliştirmeler (Sadece $ ile alınır)</div>
     
     <div class="market-list">
         <div class="market-item" onclick="buyItem('clicker')">
             <div class="item-info">
                 <div class="item-name">⚡ Otomatik İmleç</div>
-                <div class="item-desc">+1 Saniyelik Üretim</div>
+                <div class="item-desc">+1 Saniyede Kurabiye Üretimi</div>
             </div>
             <div class="item-cost-zone">
-                <div class="item-cost" id="cost-clicker">15</div>
+                <div class="item-cost" id="cost-clicker">15 $</div>
                 <div class="item-count" id="count-clicker">Adet: 0</div>
             </div>
         </div>
@@ -216,10 +256,10 @@
         <div class="market-item" onclick="buyItem('grandma')">
             <div class="item-info">
                 <div class="item-name">👵 Kurabiye Ninesi</div>
-                <div class="item-desc">+5 Saniyelik Üretim</div>
+                <div class="item-desc">+5 Saniyede Kurabiye Üretimi</div>
             </div>
             <div class="item-cost-zone">
-                <div class="item-cost" id="cost-grandma">100</div>
+                <div class="item-cost" id="cost-grandma">100 $</div>
                 <div class="item-count" id="count-grandma">Adet: 0</div>
             </div>
         </div>
@@ -227,46 +267,43 @@
         <div class="market-item" onclick="buyItem('factory')">
             <div class="item-info">
                 <div class="item-name">🏭 Mega Fabrika</div>
-                <div class="item-desc">+40 Saniyelik Üretim</div>
+                <div class="item-desc">+40 Saniyede Kurabiye Üretimi</div>
             </div>
             <div class="item-cost-zone">
-                <div class="item-cost" id="cost-factory">1,100</div>
+                <div class="item-cost" id="cost-factory">1,100 $</div>
                 <div class="item-count" id="count-factory">Adet: 0</div>
-            </div>
-        </div>
-
-        <div class="market-item" onclick="buyItem('lab')">
-            <div class="item-info">
-                <div class="item-name">🧪 Kuantum Laboratuvarı</div>
-                <div class="item-desc">+250 Saniyelik Üretim</div>
-            </div>
-            <div class="item-cost-zone">
-                <div class="item-cost" id="cost-lab">12,000</div>
-                <div class="item-count" id="count-lab">Adet: 0</div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- GİZLİ GELİŞMİŞ ADMİN MENÜSÜ -->
+<!-- FIXLENMİŞ GELİŞMİŞ ADMİN PANELİ -->
 <div class="admin-panel" id="secret-panel">
     <div class="admin-title">
-        <span>⚡ ÇILGIN GİZLİ ADMİN PANELİ ⚡</span>
-        <small style="color: rgba(255,255,255,0.5)">[Kapatmak için tekrar 'o']</small>
+        <span>⚡ GELİŞMİŞ EKONOMİ ADMİN PANELİ ⚡</span>
+        <small style="color: rgba(255,255,255,0.5)">['o' ile kapat]</small>
     </div>
-    <input type="number" class="admin-input" id="cheat-amount" placeholder="Basılacak kurabiye miktarı gir..." value="50000">
-    <button class="admin-btn" onclick="injectCookies()">Kurabiyeleri Hesaba Gönder 🚀</button>
+    
+    <div class="admin-row">
+        <input type="number" class="admin-input" id="cheat-cookie" placeholder="Kurabiye miktarı..." value="1000">
+        <button class="admin-btn" onclick="addAdminAsset('cookies')">Kurabiye Bas 🍪</button>
+    </div>
+    
+    <div class="admin-row">
+        <input type="number" class="admin-input" id="cheat-money" placeholder="Para miktarı ($)..." value="500">
+        <button class="admin-btn" onclick="addAdminAsset('money')">Para Bas ($) 💵</button>
+    </div>
 </div>
 
 <script>
     let game = {
         cookies: 0,
+        money: 0,
         cps: 0,
         market: {
             clicker: { count: 0, cost: 15, cpsIncrease: 1 },
             grandma: { count: 0, cost: 100, cpsIncrease: 5 },
-            factory: { count: 0, cost: 1100, cpsIncrease: 40 },
-            lab: { count: 0, cost: 12000, cpsIncrease: 250 }
+            factory: { count: 0, cost: 1100, cpsIncrease: 40 }
         }
     };
 
@@ -275,10 +312,22 @@
         updateUI();
     }
 
+    // --- YENİ EKONOMİ: PARAYA ÇEVİRME VE VERGİ SİSTEMİ ---
+    function exchangeCookies() {
+        if (game.cookies >= 2) {
+            // 2 kurabiye = 1 dolar (%50 vergi kesintisi)
+            let earnedMoney = Math.floor(game.cookies / 2);
+            game.money += earnedMoney;
+            game.cookies = game.cookies % 2; // Kalan küsurat kurabiye cepte kalır
+            updateUI();
+        }
+    }
+
+    // --- MARKET: ARTIK SADECE DOLAR ($) İLE ALINIYOR ---
     function buyItem(itemName) {
         let item = game.market[itemName];
-        if (game.cookies >= item.cost) {
-            game.cookies -= item.cost;
+        if (game.money >= item.cost) {
+            game.money -= item.cost;
             item.count++;
             game.cps += item.cpsIncrease;
             item.cost = Math.floor(item.cost * 1.15);
@@ -286,15 +335,16 @@
         }
     }
 
-    // --- ADMİN PANELİ GÜCÜ ---
-    function injectCookies() {
-        let amountInput = document.getElementById('cheat-amount').value;
-        let amount = parseInt(amountInput);
-        
-        if (!isNaN(amount) && amount > 0) {
-            game.cookies += amount;
-            updateUI();
+    // --- FIXLENMİŞ ADMİN PANELİ FONKSİYONLARI ---
+    function addAdminAsset(type) {
+        if (type === 'cookies') {
+            let val = parseInt(document.getElementById('cheat-cookie').value);
+            if (!isNaN(val)) game.cookies += val;
+        } else if (type === 'money') {
+            let val = parseInt(document.getElementById('cheat-money').value);
+            if (!isNaN(val)) game.money += val;
         }
+        updateUI();
     }
 
     function formatNumber(num) {
@@ -302,30 +352,27 @@
     }
 
     function updateUI() {
-        document.getElementById('score').innerText = formatNumber(game.cookies) + " Kurabiye";
-        document.getElementById('cps-display').innerText = "Saniyede: " + formatNumber(game.cps);
+        document.getElementById('score').innerText = formatNumber(game.cookies) + " 🍪";
+        document.getElementById('money-score').innerText = formatNumber(game.money) + " $";
+        document.getElementById('cps-display').innerText = "Saniyede: " + formatNumber(game.cps) + " 🍪";
         
         for (let key in game.market) {
-            document.getElementById(`cost-${key}`).innerText = formatNumber(game.market[key].cost);
+            document.getElementById(`cost-${key}`).innerText = formatNumber(game.market[key].cost) + " $";
             document.getElementById(`count-${key}`).innerText = "Adet: " + game.market[key].count;
         }
     }
 
+    // Otomatik kurabiye üretimi (Saniyede bir)
     setInterval(function() {
         game.cookies += game.cps;
         updateUI();
     }, 1000);
 
-    // --- PANELİ AÇIP KAPATAN GİZLİ TUŞ ---
+    // Gizli admin paneli tetikleyicisi ('o' tuşu)
     document.addEventListener('keydown', function(event) {
-        // Eğer klavyeden 'o' veya 'O' tuşuna basılırsa
         if (event.key === 'o' || event.key === 'O') {
             let panel = document.getElementById('secret-panel');
-            if (panel.style.display === 'block') {
-                panel.style.display = 'none'; // Açıksa gizle
-            } else {
-                panel.style.display = 'block'; // Kapalıysa aç
-            }
+            panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
         }
     });
 </script>
