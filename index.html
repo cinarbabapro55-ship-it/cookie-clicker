@@ -235,16 +235,16 @@
 
 <div class="game-container">
     <div class="stats-zone">
-        <h1>RECEP TAYYİP ERDOĞANIN KURABİYELERİ</h1>
+        <h1>RECEBİN KURABİYELERİ</h1>
         <h2 id="score" style="margin: 10px 0 0 0; color: #fff;">0 🍪</h2>
         <div class="money-display" id="money-score">0 $</div>
         <div><div class="cps-badge" id="cps-display">Saniyede: 0 🍪</div></div>
     </div>
     
-    <!-- Banka / %100 VERGİ ALANI -->
+    <!-- Banka / %75 VERGİ ALANI -->
     <div class="exchange-zone">
-        <button class="exchange-btn" onclick="exchangeCookies()">Kurabiyeleri Bozdurmayı Dene</button>
-        <div class="tax-info">⚠️ DİKKAT: %100 Vergi Kesintisi Var! Tüm kurabiyelere el konulur.</div>
+        <button class="exchange-btn" onclick="exchangeCookies()">Tüm Kurabiyeleri Paraya Çevir ($)</button>
+        <div class="tax-info">⚠️ Kurabiye Bankası %75 vergi kesintisi uygulamaktadır! (4 Kurabiye = 1 $)</div>
     </div>
     
     <div class="cookie-wrapper">
@@ -360,11 +360,12 @@
         updateUI();
     }
 
-    // --- %100 VERGİ SİSTEMİ: PARAYA ÇEVİRİNCE HER ŞEY GİDİYOR ---
+    // --- %75 VERGİ SİSTEMİ (4 Kurabiye = 1 $) ---
     function exchangeCookies() {
-        if (game.cookies > 0) {
-            alert("Vergi Kanunu gereği tüm kurabiyelerinize el konulmuştur! Kazanılan Para: 0 $");
-            game.cookies = 0; // %100 vergi sıfırlıyor
+        if (game.cookies >= 4) {
+            let earnedMoney = Math.floor(game.cookies / 4);
+            game.money += earnedMoney;
+            game.cookies = game.cookies % 4; // Kalan küsurat elinde kalır
             updateUI();
         }
     }
