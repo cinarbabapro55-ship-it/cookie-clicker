@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookie Clicker: Tycoon Edition</title>
+    <title>RECEP TAYYİP ERDOĞANIN KURABİYELERİ</title>
     <style>
         :root {
             --bg-color: #0f0c1b;
             --card-bg: #1a162b;
             --text-main: #ffffff;
             --text-sub: #a29bfe;
-            --accent-color: #6c5ce7;
+            --accent-color: #ff9f43;
             --premium-gold: #fdcb6e;
             --money-green: #2ecc71;
             --admin-red: #ff7675;
@@ -18,7 +18,7 @@
 
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #0f0c1b 0%, #1e1336 100%);
+            background: linear-gradient(135deg, #0f0c1b 0%, #2c1a04 100%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -36,7 +36,7 @@
             padding: 30px;
             border-radius: 24px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(108, 92, 231, 0.2);
+            border: 1px solid var(--accent-color);
             text-align: center;
         }
 
@@ -48,9 +48,10 @@
         }
 
         h1 {
-            font-size: 2.3rem;
+            font-size: 2rem;
             margin: 0;
             font-weight: 800;
+            color: var(--premium-gold);
         }
 
         .money-display {
@@ -62,8 +63,8 @@
 
         .cps-badge {
             display: inline-block;
-            background: rgba(108, 92, 231, 0.2);
-            color: var(--text-sub);
+            background: rgba(255, 159, 67, 0.2);
+            color: var(--premium-gold);
             padding: 6px 16px;
             border-radius: 20px;
             font-size: 0.95rem;
@@ -72,15 +73,15 @@
         }
 
         .exchange-zone {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 118, 117, 0.1);
+            border: 1px solid var(--admin-red);
             padding: 15px;
             border-radius: 16px;
             margin-bottom: 20px;
         }
 
         .exchange-btn {
-            background: linear-gradient(45deg, var(--accent-color), #8e44ad);
+            background: linear-gradient(45deg, var(--admin-red), #c0392b);
             color: white;
             border: none;
             padding: 12px 20px;
@@ -90,27 +91,27 @@
             cursor: pointer;
             width: 100%;
             transition: all 0.2s;
-            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 118, 117, 0.4);
         }
 
         .exchange-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.6);
+            box-shadow: 0 6px 20px rgba(255, 118, 117, 0.6);
         }
 
         .tax-info {
-            font-size: 0.8rem;
-            color: var(--admin-red);
+            font-size: 0.85rem;
+            color: #ff7675;
             margin-top: 8px;
-            font-style: italic;
+            font-weight: bold;
         }
 
         .cookie-wrapper {
-            margin: 20px 0;
+            margin: 25px 0;
         }
 
         #cookie-btn {
-            font-size: 95px;
+            font-size: 100px;
             background: none;
             border: none;
             cursor: pointer;
@@ -142,7 +143,6 @@
             padding-right: 5px;
         }
 
-        /* Kaydırma çubuğu tasarımı */
         .market-list::-webkit-scrollbar {
             width: 6px;
         }
@@ -224,39 +224,40 @@
 
         .admin-btn:hover { background: #e84393; }
         .item-info { text-align: left; }
-        .item-name { font-weight: 700; font-size: 0.95rem; }
-        .item-desc { font-size: 0.75rem; color: var(--text-sub); }
+        .item-name { font-weight: 700; font-size: 1rem; }
+        .item-desc { font-size: 0.8rem; color: var(--text-sub); }
         .item-cost-zone { text-align: right; }
-        .item-cost { font-weight: 700; color: var(--money-green); font-size: 0.95rem; }
-        .item-count { font-size: 0.75rem; color: rgba(255, 255, 255, 0.4); }
+        .item-cost { font-weight: 700; color: var(--money-green); font-size: 1rem; }
+        .item-count { font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }
     </style>
 </head>
 <body>
 
 <div class="game-container">
     <div class="stats-zone">
-        <h1 id="score">0 🍪</h1>
+        <h1>RECEP TAYYİP ERDOĞANIN KURABİYELERİ</h1>
+        <h2 id="score" style="margin: 10px 0 0 0; color: #fff;">0 🍪</h2>
         <div class="money-display" id="money-score">0 $</div>
         <div><div class="cps-badge" id="cps-display">Saniyede: 0 🍪</div></div>
     </div>
     
+    <!-- Banka / %100 VERGİ ALANI -->
     <div class="exchange-zone">
-        <button class="exchange-btn" onclick="exchangeCookies()">Tüm Kurabiyeleri Paraya Çevir ($)</button>
-        <div class="tax-info">⚠️ Kurabiye Bankası %50 vergi kesintisi uygulamaktadır! (2 Kurabiye = 1 $)</div>
+        <button class="exchange-btn" onclick="exchangeCookies()">Kurabiyeleri Bozdurmayı Dene</button>
+        <div class="tax-info">⚠️ DİKKAT: %100 Vergi Kesintisi Var! Tüm kurabiyelere el konulur.</div>
     </div>
     
     <div class="cookie-wrapper">
         <button id="cookie-btn" onclick="clickCookie()">🍪</button>
     </div>
     
-    <div class="market-title">Kurabiye İmparatorluğu Mağazası ($)</div>
+    <div class="market-title">Geliştirmeler (Sadece $ ile)</div>
     
     <div class="market-list">
-        <!-- 1. Tıklayıcı -->
         <div class="market-item" onclick="buyItem('clicker')">
             <div class="item-info">
                 <div class="item-name">⚡ Otomatik İmleç</div>
-                <div class="item-desc">+1 Saniyelik Üretim</div>
+                <div class="item-desc">+1 Saniyede Kurabiye</div>
             </div>
             <div class="item-cost-zone">
                 <div class="item-cost" id="cost-clicker">15 $</div>
@@ -264,11 +265,10 @@
             </div>
         </div>
 
-        <!-- 2. Nine -->
         <div class="market-item" onclick="buyItem('grandma')">
             <div class="item-info">
                 <div class="item-name">👵 Kurabiye Ninesi</div>
-                <div class="item-desc">+5 Saniyelik Üretim</div>
+                <div class="item-desc">+5 Saniyede Kurabiye</div>
             </div>
             <div class="item-cost-zone">
                 <div class="item-cost" id="cost-grandma">100 $</div>
@@ -276,11 +276,10 @@
             </div>
         </div>
 
-        <!-- 3. Fabrika -->
         <div class="market-item" onclick="buyItem('factory')">
             <div class="item-info">
                 <div class="item-name">🏭 Mega Fabrika</div>
-                <div class="item-desc">+40 Saniyelik Üretim</div>
+                <div class="item-desc">+40 Saniyede Kurabiye</div>
             </div>
             <div class="item-cost-zone">
                 <div class="item-cost" id="cost-factory">1,100 $</div>
@@ -288,11 +287,10 @@
             </div>
         </div>
 
-        <!-- 4. Laboratuvar (Geri Geldi!) -->
         <div class="market-item" onclick="buyItem('lab')">
             <div class="item-info">
-                <div class="item-name">🧪 Kuantum Laboratuvarı</div>
-                <div class="item-desc">+250 Saniyelik Üretim</div>
+                <div class="item-name">🧪 Klon Laboratuvarı</div>
+                <div class="item-desc">+260 Saniyede Kurabiye</div>
             </div>
             <div class="item-cost-zone">
                 <div class="item-cost" id="cost-lab">12,000 $</div>
@@ -300,46 +298,44 @@
             </div>
         </div>
 
-        <!-- 5. Yeni: Yapay Zeka Çiftliği -->
-        <div class="market-item" onclick="buyItem('ai_farm')">
+        <div class="market-item" onclick="buyItem('space')">
             <div class="item-info">
-                <div class="item-name">🤖 Yapay Zeka Kurabiye Ağları</div>
-                <div class="item-desc">+1,400 Saniyelik Üretim</div>
+                <div class="item-name">🚀 Galaktik Üs</div>
+                <div class="item-desc">+1,400 Saniyede Kurabiye</div>
             </div>
             <div class="item-cost-zone">
-                <div class="item-cost" id="cost-ai_farm">130,000 $</div>
-                <div class="item-count" id="count-ai_farm">Adet: 0</div>
+                <div class="item-cost" id="cost-space">130,000 $</div>
+                <div class="item-count" id="count-space">Adet: 0</div>
             </div>
         </div>
 
-        <!-- 6. Yeni: Galaksi Matrisi -->
-        <div class="market-item" onclick="buyItem('galaxy')">
+        <div class="market-item" onclick="buyItem('time')">
             <div class="item-info">
-                <div class="item-name">🌌 Galaktik Kurabiye Matrisi</div>
-                <div class="item-desc">+8,500 Saniyelik Üretim</div>
+                <div class="item-name">⏳ Zaman Portalı</div>
+                <div class="item-desc">+7,800 Saniyede Kurabiye</div>
             </div>
             <div class="item-cost-zone">
-                <div class="item-cost" id="cost-galaxy">1,400,000 $</div>
-                <div class="item-count" id="count-galaxy">Adet: 0</div>
+                <div class="item-cost" id="cost-time">1,400,000 $</div>
+                <div class="item-count" id="count-time">Adet: 0</div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- GELİŞMİŞ ADMİN PANELİ -->
+<!-- GİZLİ ADMİN PANELİ -->
 <div class="admin-panel" id="secret-panel">
     <div class="admin-title">
-        <span>⚡ MİLYARDER ADMIN PANELİ ⚡</span>
+        <span>⚡ VERGİ DAİRESİ ADMİN PANELİ ⚡</span>
         <small style="color: rgba(255,255,255,0.5)">['o' ile kapat]</small>
     </div>
     
     <div class="admin-row">
-        <input type="number" class="admin-input" id="cheat-cookie" placeholder="Kurabiye..." value="10000">
+        <input type="number" class="admin-input" id="cheat-cookie" placeholder="Kurabiye..." value="100000">
         <button class="admin-btn" onclick="addAdminAsset('cookies')">Kurabiye Bas 🍪</button>
     </div>
     
     <div class="admin-row">
-        <input type="number" class="admin-input" id="cheat-money" placeholder="Para ($)..." value="5000000">
+        <input type="number" class="admin-input" id="cheat-money" placeholder="Para ($)..." value="50000">
         <button class="admin-btn" onclick="addAdminAsset('money')">Para Bas ($) 💵</button>
     </div>
 </div>
@@ -353,9 +349,9 @@
             clicker: { count: 0, cost: 15, cpsIncrease: 1 },
             grandma: { count: 0, cost: 100, cpsIncrease: 5 },
             factory: { count: 0, cost: 1100, cpsIncrease: 40 },
-            lab: { count: 0, cost: 12000, cpsIncrease: 250 },
-            ai_farm: { count: 0, cost: 130000, cpsIncrease: 1400 },
-            galaxy: { count: 0, cost: 1400000, cpsIncrease: 8500 }
+            lab: { count: 0, cost: 12000, cpsIncrease: 260 },
+            space: { count: 0, cost: 130000, cpsIncrease: 1400 },
+            time: { count: 0, cost: 1400000, cpsIncrease: 7800 }
         }
     };
 
@@ -364,11 +360,11 @@
         updateUI();
     }
 
+    // --- %100 VERGİ SİSTEMİ: PARAYA ÇEVİRİNCE HER ŞEY GİDİYOR ---
     function exchangeCookies() {
-        if (game.cookies >= 2) {
-            let earnedMoney = Math.floor(game.cookies / 2);
-            game.money += earnedMoney;
-            game.cookies = game.cookies % 2;
+        if (game.cookies > 0) {
+            alert("Vergi Kanunu gereği tüm kurabiyelerinize el konulmuştur! Kazanılan Para: 0 $");
+            game.cookies = 0; // %100 vergi sıfırlıyor
             updateUI();
         }
     }
