@@ -27,13 +27,13 @@
             align-items: center;
             margin: 0;
             padding: 20px;
-            user-select: none; /* Basılı tutarken metinlerin seçilmesini engeller */
+            user-select: none;
         }
 
         .game-container {
             background: var(--card-bg);
             width: 100%;
-            max-width: 480px;
+            max-width: 500px;
             padding: 30px;
             border-radius: 24px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -137,8 +137,8 @@
         .market-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            max-height: 320px;
+            gap: 12px;
+            max-height: 380px;
             overflow-y: auto;
             padding-right: 5px;
         }
@@ -159,22 +159,65 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            -webkit-user-drag: none;
+            gap: 10px;
         }
 
-        .market-item:hover {
-            background: rgba(46, 204, 113, 0.1);
-            border-color: var(--money-green);
-            transform: translateY(-2px);
+        .item-main-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex: 1;
+        }
+
+        .item-info { text-align: left; }
+        .item-name { font-weight: 700; font-size: 1rem; }
+        .item-desc { font-size: 0.8rem; color: var(--text-sub); }
+        .item-cost-zone { text-align: right; margin-right: 10px; }
+        .item-cost { font-weight: 700; color: var(--money-green); font-size: 1rem; }
+        .item-count { font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }
+
+        /* SATIN ALMA ALANI (INPUT VE BUTON) */
+        .buy-control-zone {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .buy-input {
+            width: 45px;
+            padding: 8px 5px;
+            background: #25203e;
+            border: 1px solid var(--text-sub);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-align: center;
+            outline: none;
+        }
+
+        .buy-btn {
+            background: linear-gradient(45deg, var(--accent-color), #e67e22);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .buy-btn:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
         }
 
         .admin-panel {
             background: #2d132c;
             border: 2px dashed var(--admin-red);
             width: 100%;
-            max-width: 480px;
+            max-width: 500px;
             margin-top: 20px;
             padding: 20px;
             border-radius: 18px;
@@ -224,12 +267,6 @@
         }
 
         .admin-btn:hover { background: #e84393; }
-        .item-info { text-align: left; pointer-events: none; }
-        .item-name { font-weight: 700; font-size: 1rem; }
-        .item-desc { font-size: 0.8rem; color: var(--text-sub); }
-        .item-cost-zone { text-align: right; pointer-events: none; }
-        .item-cost { font-weight: 700; color: var(--money-green); font-size: 1rem; }
-        .item-count { font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }
     </style>
 </head>
 <body>
@@ -251,77 +288,115 @@
         <button id="cookie-btn" onclick="clickCookie()">🍪</button>
     </div>
     
-    <div class="market-title">Geliştirmeler (Satın Almak İçin Basılı Tutabilirsiniz)</div>
+    <div class="market-title">Geliştirmeler</div>
     
     <div class="market-list">
-        <div class="market-item" data-item="clicker">
-            <div class="item-info">
-                <div class="item-name">⚡ Otomatik İmleç</div>
-                <div class="item-desc">+1 Saniyede Kurabiye</div>
+        <!-- TIKLANMA ÖZELLİĞİ KALKTI, ARTIK BUTONLU SİSTEM VAR -->
+        <div class="market-item">
+            <div class="item-main-info">
+                <div class="item-info">
+                    <div class="item-name">⚡ Otomatik İmleç</div>
+                    <div class="item-desc">+1 Saniyede Kurabiye</div>
+                </div>
+                <div class="item-cost-zone">
+                    <div class="item-cost" id="cost-clicker">15 $</div>
+                    <div class="item-count" id="count-clicker">Adet: 0</div>
+                </div>
             </div>
-            <div class="item-cost-zone">
-                <div class="item-cost" id="cost-clicker">15 $</div>
-                <div class="item-count" id="count-clicker">Adet: 0</div>
-            </div>
-        </div>
-
-        <div class="market-item" data-item="grandma">
-            <div class="item-info">
-                <div class="item-name">👵 Kurabiye Ninesi</div>
-                <div class="item-desc">+5 Saniyede Kurabiye</div>
-            </div>
-            <div class="item-cost-zone">
-                <div class="item-cost" id="cost-grandma">100 $</div>
-                <div class="item-count" id="count-grandma">Adet: 0</div>
+            <div class="buy-control-zone">
+                <input type="number" class="buy-input" id="input-clicker" value="1" min="1">
+                <button class="buy-btn" onclick="handleBulkBuy('clicker')">Al</button>
             </div>
         </div>
 
-        <div class="market-item" data-item="factory">
-            <div class="item-info">
-                <div class="item-name">🏭 Mega Fabrika</div>
-                <div class="item-desc">+40 Saniyede Kurabiye</div>
+        <div class="market-item">
+            <div class="item-main-info">
+                <div class="item-info">
+                    <div class="item-name">👵 Kurabiye Ninesi</div>
+                    <div class="item-desc">+5 Saniyede Kurabiye</div>
+                </div>
+                <div class="item-cost-zone">
+                    <div class="item-cost" id="cost-grandma">100 $</div>
+                    <div class="item-count" id="count-grandma">Adet: 0</div>
+                </div>
             </div>
-            <div class="item-cost-zone">
-                <div class="item-cost" id="cost-factory">1,100 $</div>
-                <div class="item-count" id="count-factory">Adet: 0</div>
-            </div>
-        </div>
-
-        <div class="market-item" data-item="lab">
-            <div class="item-info">
-                <div class="item-name">🧪 Klon Laboratuvarı</div>
-                <div class="item-desc">+260 Saniyede Kurabiye</div>
-            </div>
-            <div class="item-cost-zone">
-                <div class="item-cost" id="cost-lab">12,000 $</div>
-                <div class="item-count" id="count-lab">Adet: 0</div>
+            <div class="buy-control-zone">
+                <input type="number" class="buy-input" id="input-grandma" value="1" min="1">
+                <button class="buy-btn" onclick="handleBulkBuy('grandma')">Al</button>
             </div>
         </div>
 
-        <div class="market-item" data-item="space">
-            <div class="item-info">
-                <div class="item-name">🚀 Galaktik Üs</div>
-                <div class="item-desc">+1,400 Saniyede Kurabiye</div>
+        <div class="market-item">
+            <div class="item-main-info">
+                <div class="item-info">
+                    <div class="item-name">🏭 Mega Fabrika</div>
+                    <div class="item-desc">+40 Saniyede Kurabiye</div>
+                </div>
+                <div class="item-cost-zone">
+                    <div class="item-cost" id="cost-factory">1,100 $</div>
+                    <div class="item-count" id="count-factory">Adet: 0</div>
+                </div>
             </div>
-            <div class="item-cost-zone">
-                <div class="item-cost" id="cost-space">130,000 $</div>
-                <div class="item-count" id="count-space">Adet: 0</div>
+            <div class="buy-control-zone">
+                <input type="number" class="buy-input" id="input-factory" value="1" min="1">
+                <button class="buy-btn" onclick="handleBulkBuy('factory')">Al</button>
             </div>
         </div>
 
-        <div class="market-item" data-item="time">
-            <div class="item-info">
-                <div class="item-name">⏳ Zaman Portalı</div>
-                <div class="item-desc">+7,800 Saniyede Kurabiye</div>
+        <div class="market-item">
+            <div class="item-main-info">
+                <div class="item-info">
+                    <div class="item-name">🧪 Klon Laboratuvarı</div>
+                    <div class="item-desc">+260 Saniyede Kurabiye</div>
+                </div>
+                <div class="item-cost-zone">
+                    <div class="item-cost" id="cost-lab">12,000 $</div>
+                    <div class="item-count" id="count-lab">Adet: 0</div>
+                </div>
             </div>
-            <div class="item-cost-zone">
-                <div class="item-cost" id="cost-time">1,400,000 $</div>
-                <div class="item-count" id="count-time">Adet: 0</div>
+            <div class="buy-control-zone">
+                <input type="number" class="buy-input" id="input-lab" value="1" min="1">
+                <button class="buy-btn" onclick="handleBulkBuy('lab')">Al</button>
+            </div>
+        </div>
+
+        <div class="market-item">
+            <div class="item-main-info">
+                <div class="item-info">
+                    <div class="item-name">🚀 Galaktik Üs</div>
+                    <div class="item-desc">+1,400 Saniyede Kurabiye</div>
+                </div>
+                <div class="item-cost-zone">
+                    <div class="item-cost" id="cost-space">130,000 $</div>
+                    <div class="item-count" id="count-space">Adet: 0</div>
+                </div>
+            </div>
+            <div class="buy-control-zone">
+                <input type="number" class="buy-input" id="input-space" value="1" min="1">
+                <button class="buy-btn" onclick="handleBulkBuy('space')">Al</button>
+            </div>
+        </div>
+
+        <div class="market-item">
+            <div class="item-main-info">
+                <div class="item-info">
+                    <div class="item-name">⏳ Zaman Portalı</div>
+                    <div class="item-desc">+7,800 Saniyede Kurabiye</div>
+                </div>
+                <div class="item-cost-zone">
+                    <div class="item-cost" id="cost-time">1,400,000 $</div>
+                    <div class="item-count" id="count-time">Adet: 0</div>
+                </div>
+            </div>
+            <div class="buy-control-zone">
+                <input type="number" class="buy-input" id="input-time" value="1" min="1">
+                <button class="buy-btn" onclick="handleBulkBuy('time')">Al</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- GİZLİ ADMİN PANELİ -->
 <div class="admin-panel" id="secret-panel">
     <div class="admin-title">
         <span>⚡ VERGİ DAİRESİ ADMİN PANELİ ⚡</span>
@@ -354,9 +429,6 @@
         }
     };
 
-    let holdTimeout = null;
-    let holdInterval = null;
-
     function clickCookie() {
         game.cookies += 1;
         updateUI();
@@ -371,17 +443,36 @@
         }
     }
 
-    function buyItem(itemName) {
-        let item = game.market[itemName];
-        if (game.money >= item.cost) {
-            game.money -= item.cost;
-            item.count++;
-            game.cps += item.cpsIncrease;
-            item.cost = Math.floor(item.cost * 1.15);
-            updateUI();
-            return true;
+    // --- TOPLU SATIN ALMA FONKSİYONU ---
+    function handleBulkBuy(itemName) {
+        let inputEl = document.getElementById(`input-${itemName}`);
+        let amountToBuy = parseInt(inputEl.value);
+        
+        if (isNaN(amountToBuy) || amountToBuy <= 0) {
+            alert("Lütfen geçerli bir miktar girin!");
+            return;
         }
-        return false;
+
+        let item = game.market[itemName];
+        let currentCost = item.cost;
+        let totalCost = 0;
+
+        // Girilen miktar kadar her birinin %15 artışlı maliyetini simüle et
+        for (let i = 0; i < amountToBuy; i++) {
+            totalCost += currentCost;
+            currentCost = Math.floor(currentCost * 1.15);
+        }
+
+        // Oyuncunun parası toplam maliyete yetiyor mu kontrol et
+        if (game.money >= totalCost) {
+            game.money -= totalCost;
+            item.count += amountToBuy;
+            game.cps += (item.cpsIncrease * amountToBuy);
+            item.cost = currentCost; // Yeni güncel fiyatı kaydet
+            updateUI();
+        } else {
+            alert(`Yetersiz bakiye! ${amountToBuy} adet almak için ${formatNumber(totalCost)} $ gerekiyor. Sende olan: ${formatNumber(game.money)} $`);
+        }
     }
 
     function addAdminAsset(type) {
@@ -409,41 +500,6 @@
             document.getElementById(`count-${key}`).innerText = "Adet: " + game.market[key].count;
         }
     }
-
-    // --- HIZLI VE AKICI SATIN ALMA SİSTEMİ (150ms) ---
-    function startBuying(itemName) {
-        buyItem(itemName); // İlk dokunuşta anında ilkini alır
-        
-        // 100ms basılı tuttuktan sonra hemen seriye bağlar
-        holdTimeout = setTimeout(function() {
-            holdInterval = setInterval(function() {
-                let success = buyItem(itemName);
-                if (!success) stopBuying(); 
-            }, 150); // Satın alma hızı ideal hıza (150ms) çekildi
-        }, 100);
-    }
-
-    function stopBuying() {
-        if (holdTimeout) clearTimeout(holdTimeout);
-        if (holdInterval) clearInterval(holdInterval);
-        holdTimeout = null;
-        holdInterval = null;
-    }
-
-    document.querySelectorAll('.market-item').forEach(item => {
-        let itemName = item.getAttribute('data-item');
-        
-        item.addEventListener('mousedown', () => startBuying(itemName));
-        item.addEventListener('mouseup', stopBuying);
-        item.addEventListener('mouseleave', stopBuying);
-        
-        item.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            startBuying(itemName);
-        });
-        item.addEventListener('touchend', stopBuying);
-        item.addEventListener('touchcancel', stopBuying);
-    });
 
     setInterval(function() {
         game.cookies += game.cps;
