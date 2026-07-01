@@ -410,17 +410,17 @@
         }
     }
 
-    // --- AYARLANMIŞ VE DENGELENMİŞ SATIN ALMA SİSTEMİ ---
+    // --- ORTALAMA VE AKICI SATIN ALMA SİSTEMİ ---
     function startBuying(itemName) {
-        buyItem(itemName); // İlk dokunuşta sadece 1 adet alır
+        buyItem(itemName); // Dokunduğunda ilkini hemen alır
         
-        // Yanlışlıkla makro gibi çalışmasın diye 400ms basılı tuttuktan sonra sürekli almaya başlar
+        // 250 milisaniye basılı tutulursa sürekli almaya başlar (Gereksiz bekleme azaltıldı)
         holdTimeout = setTimeout(function() {
             holdInterval = setInterval(function() {
                 let success = buyItem(itemName);
                 if (!success) stopBuying(); 
-            }, 300); // Satın alma hızı dengeli bir süreye (300ms) çekildi
-        }, 400);
+            }, 220); // Satın alma hızı tam ortalama kıvama (220ms) çekildi
+        }, 250);
     }
 
     function stopBuying() {
