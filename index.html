@@ -14,8 +14,8 @@
             --premium-gold: #fdcb6e;
             --money-green: #2ecc71;
             --admin-red: #ff7675;
-            --discord-color: #7289da;
-            --youtube-color: #ff0000;
+            --discord-color: #5865F2;
+            --youtube-color: #FF0000;
         }
 
         body {
@@ -32,7 +32,6 @@
             box-sizing: border-box;
         }
 
-        /* TÜM SAYFAYI KAPLAYAN ANA DÜZEN */
         .page-layout {
             display: flex;
             gap: 25px;
@@ -40,10 +39,9 @@
             max-width: 1200px;
             justify-content: center;
             align-items: flex-start;
-            flex-wrap: wrap; /* Mobilde alt alta gelmesi için */
+            flex-wrap: wrap;
         }
 
-        /* SAĞ VE SOL SÜTUNLARIN GENEL AYARI */
         .sidebar {
             width: 250px;
             display: flex;
@@ -53,7 +51,6 @@
             top: 20px;
         }
 
-        /* OYUNUN KENDİ PANELİ */
         .game-container {
             background: var(--card-bg);
             flex: 1;
@@ -88,17 +85,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
             padding: 12px;
             border-radius: 10px;
             color: white;
             text-decoration: none;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-size: 0.95rem;
             transition: transform 0.2s, filter 0.2s;
             box-sizing: border-box;
+        }
+
+        .social-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
         }
 
         .social-btn:hover {
@@ -106,62 +109,41 @@
             filter: brightness(1.1);
         }
 
-        .btn-discord { background: var(--discord-color); box-shadow: 0 4px 12px rgba(114, 137, 218, 0.4); }
+        .btn-discord { background: var(--discord-color); box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4); }
         .btn-youtube { background: var(--youtube-color); box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4); }
 
-        /* REKLAM ALANLARI */
-        .ad-box {
-            background: #1e1b2e;
-            border: 2px dashed #555;
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
+        /* GERÇEK REKLAM ALANLARI (GOOGLE ADSENSE UYUMLU) */
+        .google-adsense-slot {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #666;
+            font-size: 0.8rem;
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            cursor: pointer;
-            transition: transform 0.2s;
         }
 
-        .ad-box:hover {
-            transform: scale(1.02);
-        }
-
-        .ad-badge {
+        .google-adsense-slot::before {
+            content: "REKLAM";
             position: absolute;
             top: 5px;
-            right: 5px;
-            background: rgba(255,255,255,0.2);
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: #aaa;
+            left: 5px;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.3);
         }
 
-        .ad-title {
-            font-weight: 800;
-            color: #ff9f43;
-            font-size: 1.1rem;
-            margin: 10px 0;
+        .adsense-placeholder-text {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.2);
         }
 
-        .ad-desc {
-            font-size: 0.85rem;
-            color: #ddd;
-            margin-bottom: 15px;
-        }
-
-        .ad-click-btn {
-            background: #2ecc71;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            font-weight: bold;
-            border-radius: 6px;
-            font-size: 0.85rem;
-        }
-
-        /* ESKİ OYUN İÇİ STİLLER */
+        /* OYUN İÇİ STİLLER */
         .stats-zone { display: flex; flex-direction: column; gap: 5px; margin-bottom: 20px; }
         h1 { font-size: 2rem; margin: 0; font-weight: 800; color: var(--premium-gold); }
         .money-display { font-size: 1.8rem; font-weight: 700; color: var(--money-green); text-shadow: 0 0 10px rgba(46, 204, 113, 0.2); }
@@ -191,7 +173,6 @@
         .buy-btn { background: linear-gradient(45deg, var(--accent-color), #e67e22); color: white; border: none; padding: 8px 12px; font-size: 0.85rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
         .buy-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
         
-        /* ADMİN PANELİ */
         .admin-panel { background: #2d132c; border: 2px dashed var(--admin-red); width: 100%; max-width: 500px; margin-top: 20px; padding: 20px; border-radius: 18px; box-sizing: border-box; display: none; text-align: left; }
         .admin-title { color: var(--admin-red); font-weight: bold; font-size: 1.1rem; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .admin-row { display: flex; gap: 10px; margin-bottom: 10px; }
@@ -199,7 +180,6 @@
         .admin-btn { background: var(--admin-red); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
         .admin-btn:hover { background: #e84393; }
 
-        /* MOBİL CİHAZLAR İÇİN UYUMLULUK AYARI */
         @media (max-width: 1000px) {
             .sidebar { width: 100%; max-width: 500px; position: static; }
             .page-layout { flex-direction: column; align-items: center; }
@@ -210,26 +190,39 @@
 
 <div class="page-layout">
     
-    <!-- SOL SÜTUN: SOSYAL MEDYA SİTELERİ -->
+    <!-- SOL SÜTUN: SOSYAL MEDYA VE LOGOLAR -->
     <div class="sidebar">
         <div class="social-card">
-            <div class="social-title">💬 Topluluğumuz</div>
-            <!-- href="..." kısmına kendi gerçek linklerini yapıştırabilirsin -->
+            <div class="social-title">💬 Sosyal Medya</div>
+            
             <a href="https://discord.gg" target="_blank" class="social-btn btn-discord">
-                Discord Sunucumuz
+                <!-- Discord SVG Logosu -->
+                <svg viewBox="0 0 127.14 96.36">
+                    <path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a74.37,74.37,0,0,0,6.72-11A68.6,68.6,0,0,1,28,79.84c.83-.62,1.64-1.27,2.42-1.94a75,75,0,0,0,73,0c.79.67,1.6,1.32,2.42,1.94a68.49,68.49,0,0,1-10.74,5.55,74.67,74.67,0,0,0,6.72,11,105.73,105.73,0,0,0,31-18.83C129,50.7,122.64,27.78,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.9,46,53.72,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.14,46,96,53,91,65.69,84.69,65.69Z"/>
+                </svg>
+                Discord
             </a>
+            
             <a href="https://youtube.com" target="_blank" class="social-btn btn-youtube">
-                YouTube Kanalımız
+                <!-- YouTube SVG Logosu -->
+                <svg viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+                YouTube
             </a>
         </div>
         
-        <!-- SAHTE KÜÇÜK REKLAM PANOSU 1 -->
-        <div class="ad-box" onclick="alert('Reklama tıklandı! Tarayıcı yeni sekmeyi engelledi.')">
-            <div class="ad-badge">Sponsorlu</div>
-            <div style="font-size: 2.5rem;">🎮</div>
-            <div class="ad-title">BEDAVA ROBUX ALMA YOLU!</div>
-            <div class="ad-desc">Yüzde yüz gerçek ve çalışan Robux görev taktikleri için hemen göz at.</div>
-            <button class="ad-click-btn">Tıkla Al</button>
+        <!-- GERÇEK REKLAM ALANI 1 (SOL) -->
+        <div class="google-adsense-slot">
+            <!-- Oyun yayına girdiğinde gerçek AdSense kodunu buraya koyacaksın -->
+            <!-- 
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-xxx" data-ad-slot="xxx" data-ad-format="auto"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> 
+            -->
+            <div class="adsense-placeholder-text">
+                Sunucuya yüklenince buraya Google AdSense kodu gelecek.
+            </div>
         </div>
     </div>
 
@@ -378,24 +371,18 @@
         </div>
     </div>
 
-    <!-- SAĞ SÜTUN: REKLAMLAR -->
+    <!-- SAĞ SÜTUN: GERÇEK REKLAM ALANI 2 -->
     <div class="sidebar">
-        <!-- SAHTE REKLAM 2 -->
-        <div class="ad-box" onclick="alert('Bu seviyeyi sadece 13 yaşından büyük dâhiler geçebiliyor!')">
-            <div class="ad-badge">Sponsorlu</div>
-            <div style="font-size: 2.5rem;">🧠</div>
-            <div class="ad-title">BU OYUNU KİMSE GEÇEMİYOR!</div>
-            <div class="ad-desc">IQ seviyeni test etmeye hazır mısın? Sadece insanların %1'i 5. seviyeye ulaştı!</div>
-            <button class="ad-click-btn" style="background: #e74c3c;">Hemen Oyna</button>
+        <div class="google-adsense-slot" style="min-height: 300px;">
+            <div class="adsense-placeholder-text">
+                Google AdSense Dikey Reklam Alanı (Skyscraper)
+            </div>
         </div>
-
-        <!-- SAHTE REKLAM 3 -->
-        <div class="ad-box" onclick="alert('Bedava V-Papel yükleme sunucularına bağlanılıyor...')">
-            <div class="ad-badge">Sponsorlu</div>
-            <div style="font-size: 2.5rem;">🔥</div>
-            <div class="ad-title">SÜRPRİZ HEDİYE KODLARI!</div>
-            <div class="ad-desc">Kısa süreliğine geçerli ücretsiz oyun içi kod paketlerini kaçırma.</div>
-            <button class="ad-click-btn" style="background: #9b59b6;">Kodları Gör</button>
+        
+        <div class="google-adsense-slot" style="min-height: 200px;">
+            <div class="adsense-placeholder-text">
+                Kare Reklam Alanı
+            </div>
         </div>
     </div>
 
