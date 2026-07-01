@@ -354,6 +354,7 @@
         }
     };
 
+    let holdTimeout = null;
     let holdInterval = null;
 
     function clickCookie() {
@@ -370,7 +371,6 @@
         }
     }
 
-    // Satın alma fonksiyonu
     function buyItem(itemName) {
         let item = game.market[itemName];
         if (game.money >= item.cost) {
@@ -410,23 +410,26 @@
         }
     }
 
-    // --- BASILI TUTUNCA AUTO-CLICKER GİBİ ALMA SİSTEMİ ---
+    // --- AYARLANMIŞ VE DENGELENMİŞ SATIN ALMA SİSTEMİ ---
     function startBuying(itemName) {
-        buyItem(itemName); // İlk tıklamada hemen alsın
-        holdInterval = setInterval(function() {
-            let success = buyItem(itemName);
-            if (!success) stopBuying(); // Para bitince dursun
-        }, 100); // 100ms hızında seri satın alma (Saniyede 10 kez)
+        buyItem(itemName); // İlk dokunuşta sadece 1 adet alır
+        
+        // Yanlışlıkla makro gibi çalışmasın diye 400ms basılı tuttuktan sonra sürekli almaya başlar
+        holdTimeout = setTimeout(function() {
+            holdInterval = setInterval(function() {
+                let success = buyItem(itemName);
+                if (!success) stopBuying(); 
+            }, 300); // Satın alma hızı dengeli bir süreye (300ms) çekildi
+        }, 400);
     }
 
     function stopBuying() {
-        if (holdInterval) {
-            clearInterval(holdInterval);
-            holdInterval = null;
-        }
+        if (holdTimeout) clearTimeout(holdTimeout);
+        if (holdInterval) clearInterval(holdInterval);
+        holdTimeout = null;
+        holdInterval = null;
     }
 
-    // Geliştirmelere basılı tutma olaylarını bağlama
     document.querySelectorAll('.market-item').forEach(item => {
         let itemName = item.getAttribute('data-item');
         
