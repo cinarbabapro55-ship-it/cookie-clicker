@@ -27,6 +27,7 @@
             align-items: center;
             margin: 0;
             padding: 20px;
+            user-select: none; /* Basılı tutarken metinlerin seçilmesini engeller */
         }
 
         .game-container {
@@ -117,7 +118,6 @@
             cursor: pointer;
             transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             outline: none;
-            user-select: none;
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
         }
 
@@ -161,6 +161,7 @@
             align-items: center;
             cursor: pointer;
             transition: all 0.2s ease;
+            -webkit-user-drag: none;
         }
 
         .market-item:hover {
@@ -223,10 +224,10 @@
         }
 
         .admin-btn:hover { background: #e84393; }
-        .item-info { text-align: left; }
+        .item-info { text-align: left; pointer-events: none; }
         .item-name { font-weight: 700; font-size: 1rem; }
         .item-desc { font-size: 0.8rem; color: var(--text-sub); }
-        .item-cost-zone { text-align: right; }
+        .item-cost-zone { text-align: right; pointer-events: none; }
         .item-cost { font-weight: 700; color: var(--money-green); font-size: 1rem; }
         .item-count { font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }
     </style>
@@ -241,7 +242,6 @@
         <div><div class="cps-badge" id="cps-display">Saniyede: 0 🍪</div></div>
     </div>
     
-    <!-- Banka / %75 VERGİ ALANI -->
     <div class="exchange-zone">
         <button class="exchange-btn" onclick="exchangeCookies()">Tüm Kurabiyeleri Paraya Çevir ($)</button>
         <div class="tax-info">⚠️ Kurabiye Bankası %75 vergi kesintisi uygulamaktadır! (4 Kurabiye = 1 $)</div>
@@ -251,10 +251,10 @@
         <button id="cookie-btn" onclick="clickCookie()">🍪</button>
     </div>
     
-    <div class="market-title">Geliştirmeler (Sadece $ ile)</div>
+    <div class="market-title">Geliştirmeler (Satın Almak İçin Basılı Tutabilirsiniz)</div>
     
     <div class="market-list">
-        <div class="market-item" onclick="buyItem('clicker')">
+        <div class="market-item" data-item="clicker">
             <div class="item-info">
                 <div class="item-name">⚡ Otomatik İmleç</div>
                 <div class="item-desc">+1 Saniyede Kurabiye</div>
@@ -265,7 +265,7 @@
             </div>
         </div>
 
-        <div class="market-item" onclick="buyItem('grandma')">
+        <div class="market-item" data-item="grandma">
             <div class="item-info">
                 <div class="item-name">👵 Kurabiye Ninesi</div>
                 <div class="item-desc">+5 Saniyede Kurabiye</div>
@@ -276,7 +276,7 @@
             </div>
         </div>
 
-        <div class="market-item" onclick="buyItem('factory')">
+        <div class="market-item" data-item="factory">
             <div class="item-info">
                 <div class="item-name">🏭 Mega Fabrika</div>
                 <div class="item-desc">+40 Saniyede Kurabiye</div>
@@ -287,7 +287,7 @@
             </div>
         </div>
 
-        <div class="market-item" onclick="buyItem('lab')">
+        <div class="market-item" data-item="lab">
             <div class="item-info">
                 <div class="item-name">🧪 Klon Laboratuvarı</div>
                 <div class="item-desc">+260 Saniyede Kurabiye</div>
@@ -298,7 +298,7 @@
             </div>
         </div>
 
-        <div class="market-item" onclick="buyItem('space')">
+        <div class="market-item" data-item="space">
             <div class="item-info">
                 <div class="item-name">🚀 Galaktik Üs</div>
                 <div class="item-desc">+1,400 Saniyede Kurabiye</div>
@@ -309,7 +309,7 @@
             </div>
         </div>
 
-        <div class="market-item" onclick="buyItem('time')">
+        <div class="market-item" data-item="time">
             <div class="item-info">
                 <div class="item-name">⏳ Zaman Portalı</div>
                 <div class="item-desc">+7,800 Saniyede Kurabiye</div>
@@ -322,7 +322,6 @@
     </div>
 </div>
 
-<!-- GİZLİ ADMİN PANELİ -->
 <div class="admin-panel" id="secret-panel">
     <div class="admin-title">
         <span>⚡ VERGİ DAİRESİ ADMİN PANELİ ⚡</span>
@@ -355,21 +354,23 @@
         }
     };
 
+    let holdInterval = null;
+
     function clickCookie() {
         game.cookies += 1;
         updateUI();
     }
 
-    // --- %75 VERGİ SİSTEMİ (4 Kurabiye = 1 $) ---
     function exchangeCookies() {
         if (game.cookies >= 4) {
             let earnedMoney = Math.floor(game.cookies / 4);
             game.money += earnedMoney;
-            game.cookies = game.cookies % 4; // Kalan küsurat elinde kalır
+            game.cookies = game.cookies % 4;
             updateUI();
         }
     }
 
+    // Satın alma fonksiyonu
     function buyItem(itemName) {
         let item = game.market[itemName];
         if (game.money >= item.cost) {
@@ -378,7 +379,9 @@
             game.cps += item.cpsIncrease;
             item.cost = Math.floor(item.cost * 1.15);
             updateUI();
+            return true;
         }
+        return false;
     }
 
     function addAdminAsset(type) {
@@ -406,6 +409,38 @@
             document.getElementById(`count-${key}`).innerText = "Adet: " + game.market[key].count;
         }
     }
+
+    // --- BASILI TUTUNCA AUTO-CLICKER GİBİ ALMA SİSTEMİ ---
+    function startBuying(itemName) {
+        buyItem(itemName); // İlk tıklamada hemen alsın
+        holdInterval = setInterval(function() {
+            let success = buyItem(itemName);
+            if (!success) stopBuying(); // Para bitince dursun
+        }, 100); // 100ms hızında seri satın alma (Saniyede 10 kez)
+    }
+
+    function stopBuying() {
+        if (holdInterval) {
+            clearInterval(holdInterval);
+            holdInterval = null;
+        }
+    }
+
+    // Geliştirmelere basılı tutma olaylarını bağlama
+    document.querySelectorAll('.market-item').forEach(item => {
+        let itemName = item.getAttribute('data-item');
+        
+        item.addEventListener('mousedown', () => startBuying(itemName));
+        item.addEventListener('mouseup', stopBuying);
+        item.addEventListener('mouseleave', stopBuying);
+        
+        item.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startBuying(itemName);
+        });
+        item.addEventListener('touchend', stopBuying);
+        item.addEventListener('touchcancel', stopBuying);
+    });
 
     setInterval(function() {
         game.cookies += game.cps;
