@@ -176,7 +176,6 @@
         .item-cost { font-weight: 700; color: var(--money-green); font-size: 1rem; }
         .item-count { font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); }
 
-        /* SATIN ALMA ALANI (INPUT VE BUTON) */
         .buy-control-zone {
             display: flex;
             align-items: center;
@@ -275,7 +274,7 @@
     <div class="stats-zone">
         <h1>RECEBİN KURABİYELERİ</h1>
         <h2 id="score" style="margin: 10px 0 0 0; color: #fff;">0 🍪</h2>
-        <div class="money-display" id="money-score">0 $</div>
+        <div class="money-display" id="money-score">Infinity $</div>
         <div><div class="cps-badge" id="cps-display">Saniyede: 0 🍪</div></div>
     </div>
     
@@ -291,7 +290,6 @@
     <div class="market-title">Geliştirmeler</div>
     
     <div class="market-list">
-        <!-- TIKLANMA ÖZELLİĞİ KALKTI, ARTIK BUTONLU SİSTEM VAR -->
         <div class="market-item">
             <div class="item-main-info">
                 <div class="item-info">
@@ -396,7 +394,6 @@
     </div>
 </div>
 
-<!-- GİZLİ ADMİN PANELİ -->
 <div class="admin-panel" id="secret-panel">
     <div class="admin-title">
         <span>⚡ VERGİ DAİRESİ ADMİN PANELİ ⚡</span>
@@ -417,7 +414,7 @@
 <script>
     let game = {
         cookies: 0,
-        money: 0,
+        money: Infinity, // BAŞLANGIÇ PARASI DOĞRUDAN SONSUZ YAPILDI
         cps: 0,
         market: {
             clicker: { count: 0, cost: 15, cpsIncrease: 1 },
@@ -437,13 +434,15 @@
     function exchangeCookies() {
         if (game.cookies >= 4) {
             let earnedMoney = Math.floor(game.cookies / 4);
-            game.money += earnedMoney;
+            // Eğer para zaten Infinity ise ekleme yapmaya gerek yok, Infinity kalır
+            if (game.money !== Infinity) {
+                game.money += earnedMoney;
+            }
             game.cookies = game.cookies % 4;
             updateUI();
         }
     }
 
-    // --- TOPLU SATIN ALMA FONKSİYONU ---
     function handleBulkBuy(itemName) {
         let inputEl = document.getElementById(`input-${itemName}`);
         let amountToBuy = parseInt(inputEl.value);
@@ -457,21 +456,22 @@
         let currentCost = item.cost;
         let totalCost = 0;
 
-        // Girilen miktar kadar her birinin %15 artışlı maliyetini simüle et
         for (let i = 0; i < amountToBuy; i++) {
             totalCost += currentCost;
             currentCost = Math.floor(currentCost * 1.15);
         }
 
-        // Oyuncunun parası toplam maliyete yetiyor mu kontrol et
-        if (game.money >= totalCost) {
-            game.money -= totalCost;
+        // Para sonsuz (Infinity) olduğu için bakiye kontrolü her zaman başarılı olur
+        if (game.money === Infinity || game.money >= totalCost) {
+            if (game.money !== Infinity) {
+                game.money -= totalCost;
+            }
             item.count += amountToBuy;
             game.cps += (item.cpsIncrease * amountToBuy);
-            item.cost = currentCost; // Yeni güncel fiyatı kaydet
+            item.cost = currentCost;
             updateUI();
         } else {
-            alert(`Yetersiz bakiye! ${amountToBuy} adet almak için ${formatNumber(totalCost)} $ gerekiyor. Sende olan: ${formatNumber(game.money)} $`);
+            alert(`Yetersiz bakiye! ${amountToBuy} adet almak için ${formatNumber(totalCost)} $ gerekiyor.`);
         }
     }
 
@@ -481,12 +481,16 @@
             if (!isNaN(val)) game.cookies += val;
         } else if (type === 'money') {
             let val = parseInt(document.getElementById('cheat-money').value);
-            if (!isNaN(val)) game.money += val;
+            if (!isNaN(val)) {
+                if (val === 0) game.money = 0; // Sıfırlamak istenirse diye
+                else game.money += val;
+            }
         }
         updateUI();
     }
 
     function formatNumber(num) {
+        if (num === Infinity) return "Infinity";
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
